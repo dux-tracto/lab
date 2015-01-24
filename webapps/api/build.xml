@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<project name="api" basedir="." default="deploy">
+	<property name="src.dir" value="src"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="web.dir" value="web"/>
+	<property name="class.dir" value="${web.dir}/WEB-INF/classes"/>
+	<property name="name" value="api"/>
+	<property name="war.path" value="build"/>
+	<property name="app.dir" value="." />
+	<property name="app.name" value="api" />
+	<property name="appserver.lib" value="/usr/share/tomcat7/lib" />
+	<property name="webapp.dir" value="/var/lib/tomcat7/webapps" />
+
+	<path id="master-classpath">
+		<fileset dir="${web.dir}/WEB-INF/lib">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${appserver.lib}">
+			<include name="servlet-api.jar"/>
+		</fileset>
+		<pathelement path="${class.dir}"/>
+	</path>
+
+	<target name="compile" description="Compile main source tree java files">
+		<mkdir dir="${class.dir}"/>
+		<javac destdir="${class.dir}" source="1.7" target="1.7" debug="true" includeAntRuntime="false"
+			   deprecation="false" optimize="false" failonerror="true">
+			<src path="${src.dir}"/>
+			<classpath refid="master-classpath"/>
+		</javac>
+	</target>
+
+	<target name="clean" description="Clean output directories">
+		<delete>
+			<fileset dir="${class.dir}">
+				<include name="**/*.class"/>
+			</fileset>
+		</delete>
+		<delete file="${war.path}/${name}.war" />
+	</target>
+
+	<target name="deploy" depends="compile" description="Deploy application as a WAR file">
+		<war destfile="${war.path}/${name}.war" webxml="${web.dir}/WEB-INF/web.xml">
+			<fileset dir="${web.dir}">
+				<include name="**/*.*"/>
+			</fileset>
+		</war>
+		<copy file="${war.path}/${name}.war" todir="${webapp.dir}" overwrite="true" />
+	</target>
+</project>
