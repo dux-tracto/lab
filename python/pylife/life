@@ -1,0 +1,13 @@
+#!/bin/bash
+
+d=`dirname $0`
+
+if [ "$#" == 1 ]
+then
+	seed=$1
+else
+	seed=2
+fi
+
+
+${d}/life.py `tput lines` `tput cols` ${seed}
