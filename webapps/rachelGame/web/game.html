@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>The Game</title>
+</head>
+<body>
+	<div style="text-align: center;">
+		<table style="margin-left: auto; margin-right: auto;">
+			<tr>
+				<td>Player 1: <input id="p1Name" type="text">
+				</td>
+				<td>Player 2: <input id="p2Name" type="text">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="diceSpace" style="margin-bottom: 16px; margin-top: 16px;">
+				<img src="spacer.jpg" height="100" />
+				</div>
+				<br/>
+				</td>
+			</tr>
+			<tr>
+				<td><input id="p1_2" type="checkbox">2</td>
+				<td><input id="p2_2" type="checkbox">2</td>
+			</tr>
+			<tr>
+				<td><input id="p1_3" type="checkbox">3</td>
+				<td><input id="p2_3" type="checkbox">3</td>
+			</tr>
+			<tr>
+				<td><input id="p1_4" type="checkbox">4</td>
+				<td><input id="p2_4" type="checkbox">4</td>
+			</tr>
+			<tr>
+				<td><input id="p1_5" type="checkbox">5</td>
+				<td><input id="p2_5" type="checkbox">5</td>
+			</tr>
+			<tr>
+				<td><input id="p1_6" type="checkbox">6</td>
+				<td><input id="p2_6" type="checkbox">6</td>
+			</tr>
+			<tr>
+				<td><input id="p1_7" type="checkbox">7</td>
+				<td><input id="p2_7" type="checkbox">7</td>
+			</tr>
+			<tr>
+				<td><input id="p1_8" type="checkbox">8</td>
+				<td><input id="p2_8" type="checkbox">8</td>
+			</tr>
+			<tr>
+				<td><input id="p1_9" type="checkbox">9</td>
+				<td><input id="p2_9" type="checkbox">9</td>
+			</tr>
+			<tr>
+				<td><input id="p1_10" type="checkbox">10</td>
+				<td><input id="p2_10" type="checkbox">10</td>
+			</tr>
+			<tr>
+				<td><input id="p1_11" type="checkbox">11</td>
+				<td><input id="p2_11" type="checkbox">11</td>
+			</tr>
+			<tr>
+				<td><input id="p1_12" type="checkbox">12</td>
+				<td><input id="p2_12" type="checkbox">12</td>
+			</tr>
+			<tr>
+				<td><input id="p1_roll" type="button" value="  Roll  " style="font-size: 250%"/></td>
+				<td><input id="p2_roll" type="button" value="  Roll  " style="font-size: 250%"/></td>
+			</tr>
+		</table>
+		<button onclick="buttonClick();">BUTTON</button>
+	</div>
+	<script type="text/javascript">
+		var theRollingTimer;
+		var clickCount = 0;
+		var theData = "foobar";
+		function buttonClick() {
+			clickCount++;
+			console.log(document.getElementById("p1_12").checked);
+			rollTheDice();
+		}
+		function rollTheDice() {
+			document.getElementById("diceSpace").innerHTML = '<img src="rolling.gif" />';
+			theRollingTimer = setInterval(function(){ rollTheDiceWorker(); }, 2000);
+		}
+		function rollTheDiceWorker() {
+			clearInterval(theRollingTimer);
+			d1 = Math.floor(Math.random()*6) + 1;
+			d2 = Math.floor(Math.random()*6) + 1;
+			d1Img = "Dice" + d1 + ".jpg";
+			d2Img = "Dice" + d2 + ".jpg";
+			html = '<img src="' + d1Img + '" />&nbsp;<img src="' + d2Img + '" />';
+			console.log(html);
+			document.getElementById("diceSpace").innerHTML = html;
+		}
+	</script>
+</body>
+</html>
