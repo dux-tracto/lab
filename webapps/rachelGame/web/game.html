@@ -8,9 +8,16 @@
 	<div style="text-align: center;">
 		<table style="margin-left: auto; margin-right: auto;">
 			<tr>
-				<td>Player 1: <input id="p1Name" type="text">
+				<td colspan="2"><div id="message" style="margin-bottom: 16px; margin-top: 16px;">
+				Would you like to play a game?	
+				</div>
+				<br/>
 				</td>
-				<td>Player 2: <input id="p2Name" type="text">
+			</tr>
+			<tr>
+				<td>Player 1: <input id="p1Name" type="text" value="Rachel">
+				</td>
+				<td>Player 2: <input id="p2Name" type="text" value="Dad">
 				</td>
 			</tr>
 			<tr>
@@ -65,34 +72,89 @@
 				<td><input id="p2_12" type="checkbox">12</td>
 			</tr>
 			<tr>
-				<td><input id="p1_roll" type="button" value="  Roll  " style="font-size: 250%"/></td>
-				<td><input id="p2_roll" type="button" value="  Roll  " style="font-size: 250%"/></td>
+				<td><input id="p1_roll" onclick="rollTheDice();" type="button" value="  Roll  " style="font-size: 200%"  /></td>
+				<td><input id="p2_roll" onclick="rollTheDice();" type="button" value="  Roll  " style="font-size: 200%" disabled /></td>
 			</tr>
 		</table>
-		<button onclick="buttonClick();">BUTTON</button>
+		<!-- <button onclick="buttonClick();">BUTTON</button> -->
 	</div>
 	<script type="text/javascript">
 		var theRollingTimer;
 		var clickCount = 0;
 		var theData = "foobar";
+		var currentPlayer;
+		var message;
+		var playerName;
+		var p1HitCount = 0;
+		var p2HitCount = 0;
+		
 		function buttonClick() {
-			clickCount++;
 			console.log(document.getElementById("p1_12").checked);
 			rollTheDice();
 		}
+
 		function rollTheDice() {
+			clickCount++;
+			document.getElementById("p1_roll").disabled = true;
+			document.getElementById("p2_roll").disabled = true;
 			document.getElementById("diceSpace").innerHTML = '<img src="rolling.gif" />';
-			theRollingTimer = setInterval(function(){ rollTheDiceWorker(); }, 2000);
+			theRollingTimer = setInterval(function(){ rollTheDiceWorker(); }, 1500);
 		}
+
 		function rollTheDiceWorker() {
+			winner = 0;
+			currentHitCount = 0;
 			clearInterval(theRollingTimer);
 			d1 = Math.floor(Math.random()*6) + 1;
 			d2 = Math.floor(Math.random()*6) + 1;
+			total = d1 + d2;
 			d1Img = "Dice" + d1 + ".jpg";
 			d2Img = "Dice" + d2 + ".jpg";
 			html = '<img src="' + d1Img + '" />&nbsp;<img src="' + d2Img + '" />';
-			console.log(html);
 			document.getElementById("diceSpace").innerHTML = html;
+			if (clickCount % 2 == 0) {
+				document.getElementById("p1_roll").disabled = false;
+				document.getElementById("p2_roll").disabled = true;
+				currentPlayer = "p2";
+			} else {
+				document.getElementById("p1_roll").disabled = true;
+				document.getElementById("p2_roll").disabled = false;
+				currentPlayer = "p1";
+			}
+
+			if (currentPlayer == "p1") {
+				playerName = document.getElementById("p1Name").value;				
+				if (playerName.length == 0) {
+					playerName = "Player 1";
+				}
+			} else {
+				playerName = document.getElementById("p2Name").value;				
+				if (playerName.length == 0) {
+					playerName = "Player 2";
+				}
+			}
+
+			console.log("Rolling for " + currentPlayer);
+			checkBoxID = currentPlayer + '_' + total;
+			console.log("checkBoxID: " + checkBoxID);
+			if (document.getElementById(checkBoxID).checked) {
+				message = playerName + " already had rolled " + total;
+			} else {
+				if (currentPlayer == "p1") {
+					p1HitCount++;	
+					currentHitCount = p1HitCount;
+				} else {
+					p2HitCount++;	
+					currentHitCount = p2HitCount;
+				}
+				if (currentHitCount == 11) {
+					message = playerName + " wins!!!";
+				} else {
+					message = playerName + " rolled " + total;
+				}
+				document.getElementById(checkBoxID).checked = true;
+			}
+			document.getElementById("message").innerHTML = message;
 		}
 	</script>
 </body>
