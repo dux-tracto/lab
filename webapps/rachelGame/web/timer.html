@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Pink Floyd Timer</title>
+</head>
+<body>
+	<div
+		style="text-align: center; width: 800px; margin-left: auto; margin-right: auto;">
+		<table border="0">
+			<tr>
+				<td>
+					<table>
+						<tr>
+							<td valign="top" align="center" colspan="2" id="hoursBox"><h1>00</h1></td>
+						</tr>
+						<tr>
+							<td align="left">
+								<button id="decrementHoursButton" onclick="decrementHour();">-</button>
+							</td>
+							<td align="right">
+								<button id="incrementHoursButton" onclick="incrementHour();">+</button>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table>
+						<tr>
+							<td valign="top" align="center" colspan="2"><h1>:</h1></td>
+						</tr>
+						<tr>
+							<td align="left">&nbsp;</td>
+							<td align="left">&nbsp;</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table>
+						<tr>
+							<td valign="top" align="center" colspan="2" id="minutesBox"><h1>00</h1></td>
+						</tr>
+						<tr>
+							<td align="left">
+								<button id="decrementMinutesButton" onclick="decrementMinute();">-</button>
+							</td>
+							<td align="right">
+								<button id="incrementMinutesButton" onclick="incrementMinute();">+</button>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<table>
+						<tr>
+							<td valign="top" align="center" colspan="2"><h1>:</h1></td>
+						</tr>
+						<tr>
+							<td align="left">&nbsp;</td>
+							<td align="left">&nbsp;</td>
+						</tr>
+					</table>
+				</td>
+			<td>
+				<table>
+					<tr>
+						<td valign="top" align="center" colspan="2" id="secondsBox"><h1>00</h1></td>
+					</tr>
+					<tr>
+						<td align="left">
+							<button id="decrementSecondsButton" onclick="decrementSecond();">-</button>
+						</td>
+						<td align="right">
+							<button id="incrementSecondsButton" onclick="incrementSecond();">+</button>
+						</td>
+					</tr>
+				</table>
+			</td>
+			</tr>
+			<tr>
+				<td colspan="5" align="center"><button id="startPauseButton" onclick="goGoGadget();">START</button></td>
+			</tr>
+		</table>
+	</div>
+	<script type="text/javascript">
+		var hours = 0;
+		var minutes = 0;
+		var seconds = 0;
+		var totalTime = 9999;
+		var running = false;
+		var theTimer;	
+		function decrementHour() {
+			console.log("decrementHour() called")
+			if (hours == 0) {
+				hours = 59;
+			} else {
+				hours = hours - 1;
+			}
+			console.log(hours);
+			document.getElementById("hoursBox").innerHTML = "<h1>"
+					+ zeroPad(hours) + "</h1>";
+		}
+
+		function incrementHour() {
+			console.log("decrementHour() called")
+			if (hours == 59) {
+				hours = 0;
+			} else {
+				hours = hours + 1;
+			}
+			console.log(hours);
+			document.getElementById("hoursBox").innerHTML = "<h1>"
+					+ zeroPad(hours) + "</h1>";
+		}
+
+		function decrementMinute() {
+			console.log("decrementMinute() called")
+			if (minutes == 0) {
+				minutes = 59;
+			} else {
+				minutes = minutes - 1;
+			}
+			console.log(minutes);
+			document.getElementById("minutesBox").innerHTML = "<h1>"
+					+ zeroPad(minutes) + "</h1>";
+		}
+
+		function incrementMinute() {
+			console.log("decrementMinute() called")
+			if (minutes == 59) {
+				minutes = 0;
+			} else {
+				minutes = minutes + 1;
+			}
+			console.log(minutes);
+			document.getElementById("minutesBox").innerHTML = "<h1>"
+					+ zeroPad(minutes) + "</h1>";
+		}
+
+		function decrementSecond() {
+			console.log("decrementSecond() called")
+			if (seconds == 0) {
+				seconds = 59;
+			} else {
+				seconds = seconds - 1;
+			}
+			console.log(seconds);
+			document.getElementById("secondsBox").innerHTML = "<h1>"
+					+ zeroPad(seconds) + "</h1>";
+		}
+
+		function incrementSecond() {
+			console.log("decrementSecond() called")
+			if (seconds == 59) {
+				seconds = 0;
+			} else {
+				seconds = seconds + 1;
+			}
+			console.log(minutes);
+			document.getElementById("secondsBox").innerHTML = "<h1>" + zeroPad(seconds) + "</h1>";
+		}
+
+		function goGoGadget() {
+			if (running) {
+				running = false;
+				clearInterval(theTimer);
+				document.getElementById("decrementHoursButton").disabled = false;
+				document.getElementById("incrementHoursButton").disabled = false;
+				document.getElementById("decrementMinutesButton").disabled = false;
+				document.getElementById("incrementMinutesButton").disabled = false;
+				document.getElementById("decrementSecondsButton").disabled = false;
+				document.getElementById("incrementSecondsButton").disabled = false;
+				document.getElementById("startPauseButton").firstChild.data = "START";
+			} else {
+				running = true;
+				totalTime = seconds + 60 * minutes + 60 * 60 * hours;
+				document.getElementById("startPauseButton").firstChild.data = "PAUSE";
+				document.getElementById("decrementHoursButton").disabled = true;
+				document.getElementById("incrementHoursButton").disabled = true;
+				document.getElementById("decrementMinutesButton").disabled = true;
+				document.getElementById("incrementMinutesButton").disabled = true;
+				document.getElementById("decrementSecondsButton").disabled = true;
+				document.getElementById("incrementSecondsButton").disabled = true;
+				console.log("[5] Running timer for " + totalTime + " seconds")
+				theTimer = setInterval(
+						function() {
+							updateClock();
+						}, 1000);
+			}
+
+		}
+
+		function updateClock() {
+			totalTime = totalTime - 1;
+			if (totalTime > 0) {
+				h = Math.floor(totalTime / 3600);
+				m = Math.floor((totalTime - h * 3600) / 60);
+				s = totalTime - (h * 3600) - (m * 60);
+				hours = h;
+				minutes = m;
+				seconds = s;
+				console.log("totalTime: " + totalTime + " - " + h + ":" + m + ":" + s); 
+				document.getElementById("hoursBox").innerHTML = "<h1>" + zeroPad(h) + "</h1>";
+				document.getElementById("minutesBox").innerHTML = "<h1>" + zeroPad(m) + "</h1>";
+				document.getElementById("secondsBox").innerHTML = "<h1>" + zeroPad(s) + "</h1>";
+			} else {
+				location.replace("https://www.youtube.com/watch?v=JwYX52BP2Sk")
+			}
+		}
+
+		function zeroPad(n) {
+			if (n < 10) {
+				n = '0' + n;
+			}
+
+			return n;
+		}
+	</script>
+</body>
+</html>
