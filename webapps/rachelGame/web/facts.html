@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Multiplication Practice</title>
+<style>
+.abc {
+font-family: courier;
+font-size: 40px;
+}
+</style>
+</head>
+<body onload="createQuestion(); doVooDoo()">
+	<br />
+	<br />
+	<br />
+	<br />
+	<br />
+	<div id="q" style="text-align: center; font-size: 80px; font-family: courier">
+		8 x 9 = <u>&nbsp;&nbsp;&nbsp;&nbsp;</u><br />
+	</div>
+	<br />
+	<div style="text-align: center;">
+		<button id="goButton" class="abc" onclick="doVooDoo();">GO!</button>
+	</div>
+	<script>
+	var ANSWER = "Answer";
+	var NEXT   = "Next Question"; 
+	var answered = false;
+	var unansweredQuestion;
+	var answeredQuestion;
+
+	function doVooDoo() {
+		if (answered) {
+			document.getElementById("q").innerHTML = answeredQuestion;	
+			document.getElementById("goButton").firstChild.data = NEXT; 
+			createQuestion();
+		} else {
+			document.getElementById("q").innerHTML = unansweredQuestion;
+			document.getElementById("goButton").firstChild.data = ANSWER; 
+		}
+		answered = !answered;
+	}
+	
+	function createQuestion() {
+		n1 = Math.floor(Math.random()*12) + 1;
+		n2 = Math.floor(Math.random()*12) + 1;
+		a = n1 * n2;
+		unansweredQuestion = n1 + " * " + n2 +" = <u>&nbsp;&nbsp;&nbsp;</u>";	
+		answeredQuestion = n1 + " * " + n2 + " = " + a;	
+	}
+	</script>
+</body>
+</html>
