@@ -5,49 +5,97 @@
 <title>Multiplication Practice</title>
 <style>
 .abc {
-font-family: courier;
-font-size: 40px;
+	font-family: courier;
+	font-size: 40px;
+}
+td.numpad {
+	cursor: pointer;
 }
 </style>
 </head>
-<body onload="createQuestion(); doVooDoo()">
-	<br />
-	<br />
-	<br />
-	<br />
-	<br />
-	<div id="q" style="text-align: center; font-size: 80px; font-family: courier">
-		8 x 9 = <u>&nbsp;&nbsp;&nbsp;&nbsp;</u><br />
+<body onload="createQuestion();">
+	<div style="text-align: center; font-size: 80px; font-family: courier">
+		<img onclick="createQuestion();" id="statusImage" width="64" height="64" src="http://www.takle.org/assets/spacer.jpg" />
 	</div>
 	<br />
-	<div style="text-align: center;">
-		<button id="goButton" class="abc" onclick="doVooDoo();">GO!</button>
+	<div id="q" style="text-align: center; font-size: 80px; font-family: courier;">
 	</div>
+	<br />
+	<div style="text-align: center; font-size: 80px; font-family: courier">
+		<table align="center" border="1">
+		<tr>
+			<td align="center" class="numpad" id="n1" onclick="numpadSmashed('1');">&nbsp;1&nbsp;</td>
+			<td align="center" class="numpad" id="n2" onclick="numpadSmashed('2');">&nbsp;2&nbsp;</td>
+			<td align="center" class="numpad" id="n3" onclick="numpadSmashed('3');">&nbsp;3&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="center" class="numpad" id="n4" onclick="numpadSmashed('4');">&nbsp;4&nbsp;</td>
+			<td align="center" class="numpad" id="n5" onclick="numpadSmashed('5');"">&nbsp;5&nbsp;</td>
+			<td align="center" class="numpad" id="n6" onclick="numpadSmashed('6');">&nbsp;6&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="center" class="numpad" id="n7" onclick="numpadSmashed('7');">&nbsp;7&nbsp;</td>
+			<td align="center" class="numpad" id="n8" onclick="numpadSmashed('8');">&nbsp;8&nbsp;</td>
+			<td align="center" class="numpad" id="n9" onclick="numpadSmashed('9');">&nbsp;9&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="center" class="numpad" onclick="numpadSmashed('c')";>C</td>
+			<td align="center" class="numpad" id="n0" onclick="numpadSmashed('0')";>0</td>
+			<td align="center" class="numpad" onclick="numpadSmashed('?');">?</td>
+		</tr>
+		</table>
+	</div>
+	<br />
 	<script>
+	var CHECK_URL = "http://www.takle.org/assets/check.png";
+	var SPINNER_URL = "http://www.takle.org/assets/spinner.gif";
+	var SPACER_URL = "http://www.takle.org/assets/spacer.jpg";
 	var ANSWER = "Answer";
 	var NEXT   = "Next Question"; 
 	var answered = false;
 	var unansweredQuestion;
-	var answeredQuestion;
+	var originalUnansweredQuestion;
+	var candidateAnswer = "";
+	var answer = -1;
 
-	function doVooDoo() {
-		if (answered) {
-			document.getElementById("q").innerHTML = answeredQuestion;	
-			document.getElementById("goButton").firstChild.data = NEXT; 
+	function numpadSmashed(n) {
+		if (n == '?') {
 			createQuestion();
-		} else {
-			document.getElementById("q").innerHTML = unansweredQuestion;
-			document.getElementById("goButton").firstChild.data = ANSWER; 
+			return;
 		}
-		answered = !answered;
+
+		if (answered) {
+			candidateAnswer = "";
+			return;
+		}
+
+		if (n == 'c') {
+			unansweredQuestion = originalUnansweredQuestion;
+			candidateAnswer = "";
+		} else {
+			unansweredQuestion = unansweredQuestion + n;
+			candidateAnswer = candidateAnswer + n;
+			if (parseInt(candidateAnswer, 10) == answer) {
+				answered = true;
+			}
+		}
+
+		document.getElementById('q').innerHTML = unansweredQuestion;
+		if (answered) {
+			document.getElementById('statusImage').src = CHECK_URL;
+		}
 	}
-	
+
 	function createQuestion() {
+		answered = false;
 		n1 = Math.floor(Math.random()*12) + 1;
 		n2 = Math.floor(Math.random()*12) + 1;
-		a = n1 * n2;
-		unansweredQuestion = n1 + " * " + n2 +" = <u>&nbsp;&nbsp;&nbsp;</u>";	
-		answeredQuestion = n1 + " * " + n2 + " = " + a;	
+		answer = n1 * n2;
+		unansweredQuestion = n1 + " * " + n2 +" = ";	
+		originalUnansweredQuestion = unansweredQuestion;
+		candidateAnswer = "";
+		document.getElementById('statusImage').src = SPACER_URL;
+		document.getElementById('q').innerHTML = unansweredQuestion;
 	}
 	</script>
 </body>
