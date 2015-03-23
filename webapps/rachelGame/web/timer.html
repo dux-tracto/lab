@@ -86,6 +86,7 @@
 		var hours = 0;
 		var minutes = 0;
 		var seconds = 0;
+		var startTime = 0;
 		var totalTime = 9999;
 		var running = false;
 		var theTimer;	
@@ -173,6 +174,7 @@
 				document.getElementById("startPauseButton").firstChild.data = "START";
 			} else {
 				running = true;
+				startTime = Math.floor((new Date).getTime()/1000); 
 				totalTime = seconds + 60 * minutes + 60 * 60 * hours;
 				document.getElementById("startPauseButton").firstChild.data = "PAUSE";
 				document.getElementById("decrementHoursButton").disabled = true;
@@ -191,15 +193,18 @@
 		}
 
 		function updateClock() {
-			totalTime = totalTime - 1;
-			if (totalTime > 0) {
-				h = Math.floor(totalTime / 3600);
-				m = Math.floor((totalTime - h * 3600) / 60);
-				s = totalTime - (h * 3600) - (m * 60);
+			//totalTime = totalTime - 1;
+			elapsedTime = Math.floor((new Date).getTime()/1000) - startTime; 
+			displayTime = totalTime - elapsedTime;
+			console.log("displayTime: " + displayTime + " elapsedTime: " + elapsedTime);
+			if (displayTime > 0) {
+				h = Math.floor(displayTime / 3600);
+				m = Math.floor((displayTime - h * 3600) / 60);
+				s = displayTime - (h * 3600) - (m * 60);
 				hours = h;
 				minutes = m;
 				seconds = s;
-				console.log("totalTime: " + totalTime + " - " + h + ":" + m + ":" + s); 
+				console.log("displayTime: " + displayTime + " - " + h + ":" + m + ":" + s); 
 				document.getElementById("hoursBox").innerHTML = "<h1>" + zeroPad(h) + "</h1>";
 				document.getElementById("minutesBox").innerHTML = "<h1>" + zeroPad(m) + "</h1>";
 				document.getElementById("secondsBox").innerHTML = "<h1>" + zeroPad(s) + "</h1>";
