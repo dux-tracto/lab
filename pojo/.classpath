@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="PiCalculator/src"/>
+	<classpathentry kind="src" path="roku/gen"/>
+	<classpathentry kind="src" path="roku/src"/>
+	<classpathentry kind="src" path="Weekly/src"/>
+	<classpathentry kind="lib" path="roku/bin/dexedLibs/android-support-v4-ff42a8f4e6a678ec8dde97ef6ff4beae.jar"/>
+	<classpathentry kind="lib" path="roku/libs/android-support-v4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="roku/bin/classes"/>
+</classpath>

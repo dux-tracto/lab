@@ -105,9 +105,9 @@ public class Weekly {
 	}
 
 	private void initCal() {
-		Date d = new Date(2014, 11, 2);
+		//Date d = new Date(2015, 11, 2);
 		cal = Calendar.getInstance();
 		cal.set(Calendar.DAY_OF_YEAR, 1);
-		cal.add(Calendar.DAY_OF_YEAR, -4);
+		cal.add(Calendar.DAY_OF_YEAR, -5);
 	}
 }
